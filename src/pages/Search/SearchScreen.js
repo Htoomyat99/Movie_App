@@ -1,15 +1,41 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {View, Text, TouchableOpacity, TextInput, FlatList} from 'react-native';
+import React, {useState} from 'react';
+import style from './style';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import SearchIcon from '../../../assets/icons/SearchIcon';
+import SearchInput from '../../components/SearchInput';
+import carouselData from '../../data/data';
+import MovieList from '../../components/MovieList';
 
 const SearchScreen = ({navigation}) => {
+  const [inputValue, setInputValue] = useState('');
+
+  const onChangeText = text => {
+    setInputValue(text);
+    console.log('inputValue >>>', inputValue);
+  };
+
+  const renderItem = (item, index) => {
+    return <MovieList isFavorite={false} />;
+  };
+
   return (
-    <View>
-      <Text>SearchScreen</Text>
-      <TouchableOpacity
-        style={{backgroundColor: '#ddd'}}
-        onPress={() => navigation.navigate('SearchDetail')}>
-        <Text>Go Detail</Text>
-      </TouchableOpacity>
+    <View style={{flex: 1}}>
+      {/* SearchInput */}
+      <SearchInput inputValue={inputValue} onChangeText={onChangeText} />
+
+      <Text style={style.headerText}>Popular Search</Text>
+
+      {/* movieList */}
+      <FlatList
+        style={style.flatList}
+        data={carouselData}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 };

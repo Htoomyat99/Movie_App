@@ -1,0 +1,29 @@
+import {View, Text} from 'react-native';
+import React from 'react';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import AnimatedLottieView from 'lottie-react-native';
+import style from './style';
+
+const NoDataFound = () => {
+  return (
+    <View
+      style={{
+        marginTop: hp(20),
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <AnimatedLottieView
+        source={require('../../assets/icons/animated/noDataFound.json')}
+        style={{width: hp(30), height: hp(30)}}
+        autoPlay
+        loop={true}
+      />
+      <Text style={style.noDataText}>No Data Found</Text>
+    </View>
+  );
+};
+
+export default NoDataFound;
