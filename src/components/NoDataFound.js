@@ -5,6 +5,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import AnimatedLottieView from 'lottie-react-native';
+
+//style
 import style from './style';
 
 const NoDataFound = () => {

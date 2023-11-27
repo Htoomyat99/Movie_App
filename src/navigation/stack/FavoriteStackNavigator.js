@@ -1,5 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+//Screens
 import FavoriteScreen from '../../pages/Favorite/FavoriteScreen';
 import FavoriteDetailScreen from '../../pages/Favorite/FavoriteDetailScreen';
 

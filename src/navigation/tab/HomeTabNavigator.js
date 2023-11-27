@@ -1,23 +1,25 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomeScreen from '../../pages/Home/HomeScreen';
-import SearchScreen from '../../pages/Search/SearchScreen';
-import FavoriteScreen from '../../pages/Favorite/FavoriteScreen';
-import {movieColor} from '../../utils/theme/color';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import AnimatedLottieView from 'lottie-react-native';
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import HomeIcon from '../../../assets/icons/HomeIcon';
-import SearchIcon from '../../../assets/icons/SearchIcon';
-import FavoriteIcon from '../../../assets/icons/FavoriteIcon';
+
+//StackNavigator
 import HomeStackNavigator from '../stack/HomeStackNavigator';
 import SearchStackNavigator from '../stack/SearchStackNavigator';
 import FavoriteStackNavigator from '../stack/FavoriteStackNavigator';
+
+//icons
+import HomeIcon from '../../../assets/icons/HomeIcon';
+import SearchIcon from '../../../assets/icons/SearchIcon';
+import FavoriteIcon from '../../../assets/icons/FavoriteIcon';
+
+//utils
+import {movieColor} from '../../utils/theme/color';
 
 const Tab = createBottomTabNavigator();
 

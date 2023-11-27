@@ -1,10 +1,14 @@
 import {View, Text, TextInput} from 'react-native';
 import React from 'react';
-import style from './style';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+
+//style
+import style from './style';
+
+//icons
 import SearchIcon from '../../assets/icons/SearchIcon';
 
 const SearchInput = props => {
@@ -16,6 +20,7 @@ const SearchInput = props => {
         placeholder="Search"
         value={props.inputValue}
         onChangeText={props.onChangeText}
+        placeholderTextColor="#ddd"
       />
     </View>
   );

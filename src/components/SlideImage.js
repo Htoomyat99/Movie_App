@@ -5,8 +5,12 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import carouselData from '../data/data';
+
+//style
 import style from './style';
+
+//data
+import carouselData from '../data/data';
 
 const SlideImage = () => {
   const [active, setActive] = useState(0);

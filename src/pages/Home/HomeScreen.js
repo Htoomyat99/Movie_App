@@ -1,42 +1,56 @@
-import {View, Text, Image, FlatList} from 'react-native';
-import React from 'react';
-import {movieColor} from '../../utils/theme/color';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  StatusBar,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useContext, useEffect} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import SlideImage from '../../components/SlideImage';
+
+//style
 import style from './style';
+
+//context
+import {AuthContext} from '../../context/Context';
+
+//utils
+import {movieColor} from '../../utils/theme/color';
+import {NetErrorToast} from '../../utils/NetErrorToast';
+
+//components
+import SlideImage from '../../components/SlideImage';
 import carouselData from '../../data/data';
 import MovieList from '../../components/MovieList';
 
-const HomeScreen = () => {
-  // const renderItem = () => {
-  //   return (
-  //     <View style={style.mainContainer}>
-  //       <View style={{borderWidth: 1}}>
-  //         <Image
-  //           style={style.movieImage}
-  //           source={require('../../../assets/images/luffy.jpeg')}
-  //           resizeMode="cover"
-  //         />
-  //       </View>
-  //       <View style={style.textContainer}>
-  //         <Text style={style.movieTitleText}>Movie Title</Text>
-  //         <Text style={style.relaseText}>Movie Type</Text>
-  //         <Text style={style.relaseText}>Release Date</Text>
-  //         <Text style={style.relaseText}>Rating</Text>
-  //       </View>
-  //     </View>
-  //   );
-  // };
+const HomeScreen = ({navigation}) => {
+  const {net} = useContext(AuthContext);
 
-  const renderItem = (item, index) => {
-    return <MovieList isFavorite={false} />;
+  useEffect(() => {
+    if (!net) {
+      NetErrorToast();
+    }
+  }, [net]);
+
+  const goMovieDetail = item => {
+    navigation.navigate('HomeDetail', {data: item});
+  };
+
+  const renderItem = ({item}, index) => {
+    return <MovieList isFavorite={false} onPress={() => goMovieDetail(item)} />;
   };
 
   return (
     <View style={{flex: 1, backgroundColor: movieColor.white}}>
+      <StatusBar
+        backgroundColor={movieColor.primary}
+        barStyle={'dark-content'}
+      />
+
       <SlideImage />
 
       {/* categoryTitle */}

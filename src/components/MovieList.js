@@ -1,15 +1,22 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import style from './style';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+
+//style
+import style from './style';
+
+//icons
 import FavoriteFilled from '../../assets/icons/FavoriteFilled';
 
 const MovieList = props => {
   return (
-    <View style={style.mainContainer}>
+    <TouchableOpacity
+      style={style.mainContainer}
+      onPress={props.onPress}
+      activeOpacity={0.7}>
       <View style={{borderWidth: 1}}>
         <Image
           style={style.movieImage}
@@ -28,7 +35,7 @@ const MovieList = props => {
           <FavoriteFilled />
         </TouchableOpacity>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

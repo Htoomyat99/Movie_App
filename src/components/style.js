@@ -110,6 +110,7 @@ const style = StyleSheet.create({
     paddingHorizontal: wp(3),
     fontFamily: 'PTSans-Regular',
     fontSize: hp(2),
+    color: movieColor.black,
   },
 
   //NoDataFound
