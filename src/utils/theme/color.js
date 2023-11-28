@@ -7,4 +7,5 @@ export const movieColor = {
   black: '#000',
   grey: '#f0f0f0f',
   grey_shade200: '#D8D8D8',
+  light_beige: '#F5F5F5',
 };

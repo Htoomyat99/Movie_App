@@ -1,9 +1,5 @@
 import {View, Text, FlatList, StatusBar} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 
 //style
 import style from './style';
@@ -14,13 +10,12 @@ import {AuthContext} from '../../context/Context';
 //components
 import NoDataFound from '../../components/NoDataFound';
 import carouselData from '../../data/data';
-import MovieList from '../../components/MovieList';
+import MovieList from '../../components/MovieRenderComponent';
 
 //utils
-import {movieColor} from '../../utils/theme/color';
 import {NetErrorToast} from '../../utils/NetErrorToast';
 
-const FavoriteScreen = () => {
+const FavoriteScreen = ({navigation}) => {
   const [data, setIsData] = useState(false);
 
   const {net} = useContext(AuthContext);
@@ -31,15 +26,20 @@ const FavoriteScreen = () => {
     }
   }, [net]);
 
+  const goMovieDetail = ({item}) => {
+    navigation.navigate('HomeDetail', {data: item});
+  };
+
   const renderItem = (item, index) => {
-    return <MovieList isFavorite={true} />;
+    return <MovieList isFavorite={true} onPress={() => goMovieDetail(item)} />;
   };
 
   return (
     <View style={{flex: 1}}>
       <StatusBar
-        backgroundColor={movieColor.primary}
-        barStyle={'dark-content'}
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
       />
 
       <Text style={style.titleText}>My Favorites</Text>

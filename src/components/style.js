@@ -101,7 +101,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: wp(0.1),
-    borderColor: '#bbb',
+    borderColor: '#000',
     borderRadius: wp(2),
   },
   textInput: {
@@ -118,6 +118,32 @@ const style = StyleSheet.create({
     fontFamily: 'PTSans-Bold',
     fontSize: hp(2.2),
     color: '#bbb',
+  },
+
+  //ToastMessage
+  toastContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 16,
+    borderRadius: 8,
+    marginHorizontal: 50,
+    marginBottom: 50,
+    alignItems: 'center',
+  },
+
+  //truncatedText
+  descriptionText: {
+    color: movieColor.black,
+    width: wp(90),
+    fontFamily: 'PTSans-Regular',
+    fontSize: hp(1.9),
+    textAlign: 'justify',
+    marginTop: hp(1),
+  },
+  truncatedText: {
+    color: 'blue',
+    fontFamily: 'PTSans-Regular',
+    fontSize: hp(1.9),
   },
 });
 

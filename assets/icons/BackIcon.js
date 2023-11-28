@@ -2,7 +2,12 @@ import * as React from 'react';
 import Svg, {G, Path} from 'react-native-svg';
 /* SVGR has dropped some elements not supported by react-native-svg: title */
 const BackIcon = props => (
-  <Svg xmlns="http://www.w3.org/2000/svg" width={11} height={20} {...props}>
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={11}
+    height={20}
+    {...props}
+    viewBox="0 0 20 20">
     <G fill="none" fillRule="evenodd">
       <Path d="M-6-2h24v24H-6z" opacity={0.87} />
       <Path

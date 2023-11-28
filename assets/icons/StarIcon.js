@@ -2,7 +2,12 @@ import * as React from 'react';
 import Svg, {G, Path} from 'react-native-svg';
 /* SVGR has dropped some elements not supported by react-native-svg: title */
 const StarIcon = props => (
-  <Svg xmlns="http://www.w3.org/2000/svg" width={18} height={17} {...props}>
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={18}
+    height={17}
+    {...props}
+    viewBox="0 0 20 20">
     <G fill="none" fillRule="evenodd">
       <Path d="M-3-3h24v24H-3z" />
       <Path

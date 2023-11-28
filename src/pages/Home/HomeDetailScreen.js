@@ -1,16 +1,21 @@
-import {View, Text, StatusBar, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+  View,
+  Text,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
+import React, {useContext, useState} from 'react';
 
 //components
 import HeaderComponent from '../../components/MovieDetail/HeaderComponent';
 import BodyComponent from '../../components/MovieDetail/BodyComponent';
+import {AuthContext} from '../../context/Context';
 
 const HomeDetailScreen = ({route, navigation}) => {
-  const {data} = route.params;
+  // const {data} = route.params;
+  const {isFavorite, changeIsFavorite} = useContext(AuthContext);
 
   const playMovieAction = () => {
     console.log('movie play');
@@ -18,6 +23,19 @@ const HomeDetailScreen = ({route, navigation}) => {
 
   const playTrailerAction = () => {
     console.log('trailer play');
+  };
+
+  const backAction = () => {
+    navigation.goBack();
+  };
+
+  const favoriteAction = () => {
+    changeIsFavorite(!isFavorite);
+    if (!isFavorite) {
+      ToastAndroid.show('Add to Favorite Successfully', ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show('Remove to Favorite Successfully', ToastAndroid.SHORT);
+    }
   };
 
   return (
@@ -31,6 +49,9 @@ const HomeDetailScreen = ({route, navigation}) => {
       <HeaderComponent
         playMovieAction={playMovieAction}
         playTrailerAction={playTrailerAction}
+        backAction={backAction}
+        favoriteAction={favoriteAction}
+        isFavorite={isFavorite}
       />
 
       <BodyComponent />

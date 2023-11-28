@@ -5,71 +5,70 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-//utils
-import {movieColor} from '../../utils/theme/color';
-
 //data
 import carouselData from '../../data/data';
 
+//style
+import style from './style';
+import {movieColor} from '../../utils/theme/color';
+import TruncatedText from '../TruncatedText';
+
 const BodyComponent = () => {
-  const renderItem = ({item}) => {
+  const longText = `Uta is a beloved singer, renowned for concealing her own identity when performing. Her voice is described as "otherworldly." Now, for the firsttime ever, Uta will reveal herself to the world at a live concert.`;
+  const renderMovieType = ({index, item}) => {
     return (
-      <View
-        style={{
-          marginHorizontal: wp(3),
-          paddingHorizontal: wp(1),
-          paddingVertical: hp(1),
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+      <View style={style.movieTypeContainer}>
+        <Text style={style.movieTypeText}>Actions</Text>
+
+        {index != carouselData.slice(0, 3).length - 1 && (
+          <View style={style.dotContainer}></View>
+        )}
+      </View>
+    );
+  };
+
+  const renderCastItem = ({item}) => {
+    return (
+      <View style={style.castContainer}>
         <Image
           style={{width: wp(15), height: wp(15), borderRadius: wp(10)}}
           source={require('../../../assets/images/luffy.jpeg')}
           resizeMode="contain"
         />
-        <Text style={{color: movieColor.primary, marginTop: hp(1)}}>Luffy</Text>
-        <Text style={{color: movieColor.primary, marginTop: hp(0.5)}}>
-          Luffy Voice
-        </Text>
+
+        <Text style={style.realNameText}>Luffy</Text>
+        <Text style={style.movieStarNameText}>Luffy Voice</Text>
       </View>
     );
   };
+
   return (
-    <View style={{alignItems: 'center'}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: wp(90),
-          backgroundColor: 'red',
-          marginTop: hp(2),
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          <Text>Action</Text>
-          <Text>Adventure</Text>
-          <Text>Fantasy</Text>
+    <View style={style.bodyMainContainer}>
+      <View style={style.bodyContainer}>
+        <View style={{width: wp(70)}}>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={carouselData.slice(0, 3)}
+            renderItem={renderMovieType}
+            keyExtractor={item => item.id}
+          />
         </View>
-        <Text>3h 12m</Text>
+
+        <Text style={style.durationText}>3h 12m</Text>
       </View>
 
-      <Text style={{color: movieColor.primary, width: wp(90)}}>
-        One Piece: The Flim Red
-      </Text>
+      <Text style={style.movieNameText}>One Piece: The Flim Red</Text>
 
-      <Text style={{color: movieColor.primary, width: wp(90)}}>
-        Uta is a beloved singer, renowned for concealing her own identity when
-        performing. Her voice is described as "otherworldly." Now, for the first
-        time ever, Uta will reveal herself to the world at a live concert.
-      </Text>
+      <TruncatedText text={longText} maxWords={20} />
 
-      <Text style={{color: movieColor.primary, width: wp(90)}}>Top Cast</Text>
+      <Text style={style.castHeaderText}>Cast & Crew</Text>
 
       <FlatList
         showsHorizontalScrollIndicator={false}
         horizontal
         data={carouselData}
-        renderItem={renderItem}
+        renderItem={renderCastItem}
         keyExtractor={item => item.id}
       />
     </View>

@@ -14,15 +14,20 @@ import SplashScreen from 'react-native-splash-screen';
 import {AuthContext} from '../context/Context';
 
 //utils
-import {movieColor} from '../utils/theme/color';
 import {NetErrorToast} from '../utils/NetErrorToast';
 
 const AppNavigator = () => {
   const [isTemporary, setIsTemporary] = useState(true);
   const [net, setNet] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const context = {
     net,
+    isFavorite,
+
+    changeIsFavorite: val => {
+      setIsFavorite(val);
+    },
   };
 
   useEffect(() => {
@@ -61,13 +66,16 @@ const AppNavigator = () => {
   if (isTemporary) {
     return (
       <>
-        <StatusBar
-          backgroundColor={movieColor.primary}
-          barStyle="dark-content"
-        />
-        <View style={{flex: 1}}>
+        <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'} />
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#fff',
+          }}>
           <Image
-            style={{width: wp(100), height: hp(100), resizeMode: 'contain'}}
+            style={{resizeMode: 'contain', flex: 1}}
             source={require('../../assets/images/splashScreen.png')}
           />
         </View>

@@ -23,7 +23,7 @@ const NoDataFound = () => {
         autoPlay
         loop={true}
       />
-      <Text style={style.noDataText}>No Data Found</Text>
+      <Text style={style.noDataText}>No Favorite Found</Text>
     </View>
   );
 };

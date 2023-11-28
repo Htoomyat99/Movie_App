@@ -7,10 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useContext, useEffect} from 'react';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 
 //style
 import style from './style';
@@ -25,7 +21,7 @@ import {NetErrorToast} from '../../utils/NetErrorToast';
 //components
 import SlideImage from '../../components/SlideImage';
 import carouselData from '../../data/data';
-import MovieList from '../../components/MovieList';
+import MovieList from '../../components/MovieRenderComponent';
 
 const HomeScreen = ({navigation}) => {
   const {net} = useContext(AuthContext);
@@ -45,19 +41,28 @@ const HomeScreen = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: movieColor.white}}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: movieColor.white,
+      }}>
       <StatusBar
-        backgroundColor={movieColor.primary}
-        barStyle={'dark-content'}
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
       />
 
-      <SlideImage />
+      <View style={{marginTop: StatusBar.currentHeight}}>
+        <SlideImage />
+      </View>
 
       {/* categoryTitle */}
       <Text style={style.titleText}>Today Movie Lists</Text>
 
       {/* movieLists */}
       <FlatList
+        showsVerticalScrollIndicator={false}
         style={style.flatList}
         data={carouselData}
         renderItem={renderItem}

@@ -1,9 +1,5 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 
 //style
 import style from './style';

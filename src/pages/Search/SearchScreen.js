@@ -7,10 +7,6 @@ import {
   StatusBar,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 
 //style
 import style from './style';
@@ -25,7 +21,7 @@ import {NetErrorToast} from '../../utils/NetErrorToast';
 //components
 import SearchInput from '../../components/SearchInput';
 import carouselData from '../../data/data';
-import MovieList from '../../components/MovieList';
+import MovieList from '../../components/MovieRenderComponent';
 
 const SearchScreen = ({navigation}) => {
   const [inputValue, setInputValue] = useState('');
@@ -43,15 +39,22 @@ const SearchScreen = ({navigation}) => {
     console.log('inputValue >>>', inputValue);
   };
 
+  const goSearchDetail = ({item}) => {
+    navigation.navigate('HomeDetail', {data: item});
+  };
+
   const renderItem = (item, index) => {
-    return <MovieList isFavorite={false} />;
+    return (
+      <MovieList isFavorite={false} onPress={() => goSearchDetail(item)} />
+    );
   };
 
   return (
     <View style={{flex: 1}}>
       <StatusBar
-        backgroundColor={movieColor.primary}
-        barStyle={'dark-content'}
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
       />
 
       {/* SearchInput */}

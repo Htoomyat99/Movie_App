@@ -11,33 +11,55 @@ import BackIcon from '../../../assets/icons/BackIcon';
 import StarIcon from '../../../assets/icons/StarIcon';
 import PlayIcon from '../../../assets/icons/PlayIcon';
 import TrailerIcon from '../../../assets/icons/TrailerIcon';
+import FavoriteIcon from '../../../assets/icons/FavoriteIcon';
+import FavoriteFilled from '../../../assets/icons/FavoriteFilled';
+import {movieColor} from '../../utils/theme/color';
 
 const HeaderComponent = props => {
   return (
-    <View>
+    <View style={{zIndex: 1}}>
       <Image
         source={require('../../../assets/images/luffy.jpeg')}
-        style={{width: wp(100), height: hp(50)}}
+        style={{width: wp(100), height: hp(55)}}
         resizeMode="cover"
       />
 
       {/* backIcon */}
-      <TouchableOpacity style={style.backIconContainer}>
-        <BackIcon width={wp(5)} height={wp(5)} />
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={[
+          style.backIconContainer,
+          {left: wp(6), backgroundColor: 'rgba(52, 52, 52, 0.70)'},
+        ]}
+        onPress={props.backAction}>
+        <BackIcon width={wp(4.5)} height={wp(4.5)} />
+      </TouchableOpacity>
+
+      {/* favoriteIcon */}
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={[
+          style.backIconContainer,
+          {right: wp(6), backgroundColor: '#eee'},
+        ]}
+        onPress={props.favoriteAction}>
+        {props.isFavorite ? (
+          <FavoriteFilled />
+        ) : (
+          <FavoriteIcon color={movieColor.black} />
+        )}
       </TouchableOpacity>
 
       {/* ratings */}
       <View style={style.ratingContainer}>
-        <Text style={style.ratingText}>Rating</Text>
         <View style={style.iconContainer}>
           <StarIcon />
           <Text style={style.starText}>7.6</Text>
         </View>
-      </View>
 
-      {/* releaseDate */}
-      <View style={style.releaseDateContainer}>
-        <Text style={style.ratingText}>Release Date - 2023</Text>
+        <View style={style.divider}></View>
+
+        <Text style={style.ratingText}>2023</Text>
       </View>
 
       {/* Button */}

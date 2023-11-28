@@ -87,7 +87,7 @@ const HomeTabNavigator = () => {
                     loop={true}
                   />
                 );
-              else iconName = <FavoriteIcon />;
+              else iconName = <FavoriteIcon color="#D8D8D8" />;
               break;
 
             default:
