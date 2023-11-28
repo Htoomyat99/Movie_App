@@ -19,7 +19,7 @@ const HeaderComponent = props => {
   return (
     <View style={{zIndex: 1}}>
       <Image
-        source={require('../../../assets/images/luffy.jpeg')}
+        source={{uri: props.uri}}
         style={{width: wp(100), height: hp(55)}}
         resizeMode="cover"
       />
@@ -54,12 +54,12 @@ const HeaderComponent = props => {
       <View style={style.ratingContainer}>
         <View style={style.iconContainer}>
           <StarIcon />
-          <Text style={style.starText}>7.6</Text>
+          <Text style={style.starText}>{props.rating}</Text>
         </View>
 
         <View style={style.divider}></View>
 
-        <Text style={style.ratingText}>2023</Text>
+        <Text style={style.ratingText}>{props.releaseDate}</Text>
       </View>
 
       {/* Button */}

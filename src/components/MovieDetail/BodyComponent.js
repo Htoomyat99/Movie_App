@@ -13,14 +13,13 @@ import style from './style';
 import {movieColor} from '../../utils/theme/color';
 import TruncatedText from '../TruncatedText';
 
-const BodyComponent = () => {
-  const longText = `Uta is a beloved singer, renowned for concealing her own identity when performing. Her voice is described as "otherworldly." Now, for the firsttime ever, Uta will reveal herself to the world at a live concert.`;
+const BodyComponent = props => {
   const renderMovieType = ({index, item}) => {
     return (
       <View style={style.movieTypeContainer}>
-        <Text style={style.movieTypeText}>Actions</Text>
+        <Text style={style.movieTypeText}>{item.name}</Text>
 
-        {index != carouselData.slice(0, 3).length - 1 && (
+        {index != props.genresData.length - 1 && (
           <View style={style.dotContainer}></View>
         )}
       </View>
@@ -49,20 +48,20 @@ const BodyComponent = () => {
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
-            data={carouselData.slice(0, 3)}
+            data={props.genresData}
             renderItem={renderMovieType}
             keyExtractor={item => item.id}
           />
         </View>
 
-        <Text style={style.durationText}>3h 12m</Text>
+        <Text style={style.durationText}>{props.runtime} min</Text>
       </View>
 
-      <Text style={style.movieNameText}>One Piece: The Flim Red</Text>
+      <Text style={style.movieNameText}>{props.movieTitle}</Text>
 
-      <TruncatedText text={longText} maxWords={20} />
+      <TruncatedText text={props.overView} maxWords={25} />
 
-      <Text style={style.castHeaderText}>Cast & Crew</Text>
+      {/* <Text style={style.castHeaderText}>Cast & Crew</Text>
 
       <FlatList
         showsHorizontalScrollIndicator={false}
@@ -70,7 +69,7 @@ const BodyComponent = () => {
         data={carouselData}
         renderItem={renderCastItem}
         keyExtractor={item => item.id}
-      />
+      /> */}
     </View>
   );
 };

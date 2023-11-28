@@ -10,14 +10,13 @@ const style = StyleSheet.create({
   titleText: {
     fontFamily: 'PTSans-Bold',
     fontSize: hp(2.2),
-    color: movieColor.black,
+    color: movieColor.primary,
     marginLeft: wp(5),
-    marginTop: hp(3),
+    marginVertical: hp(3),
   },
   flatList: {
     flex: 1,
     marginBottom: hp(10),
-    paddingBottom: hp(5),
   },
 });
 

@@ -6,6 +6,7 @@ import style from './style';
 
 //context
 import {AuthContext} from '../../context/Context';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 //components
 import NoDataFound from '../../components/NoDataFound';
@@ -16,7 +17,7 @@ import MovieList from '../../components/MovieRenderComponent';
 import {NetErrorToast} from '../../utils/NetErrorToast';
 
 const FavoriteScreen = ({navigation}) => {
-  const [data, setIsData] = useState(false);
+  const [data, setIsData] = useState(true);
 
   const {net} = useContext(AuthContext);
 
@@ -31,7 +32,22 @@ const FavoriteScreen = ({navigation}) => {
   };
 
   const renderItem = (item, index) => {
-    return <MovieList isFavorite={true} onPress={() => goMovieDetail(item)} />;
+    const imageUrl =
+      'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png';
+
+    return (
+      <View style={{marginTop: hp(3)}}>
+        <MovieList
+          isFavorite={true}
+          onPress={() => goMovieDetail(item)}
+          uri={imageUrl}
+          movieTitle={'One Piece: The Flim Red'}
+          relaseDate={2022}
+          rating={7.02}
+          popularity={140}
+        />
+      </View>
+    );
   };
 
   return (
@@ -42,7 +58,9 @@ const FavoriteScreen = ({navigation}) => {
         barStyle="dark-content"
       />
 
-      <Text style={style.titleText}>My Favorites</Text>
+      <View style={{marginTop: StatusBar.currentHeight}}>
+        <Text style={style.titleText}>My Favorites</Text>
+      </View>
 
       {/* movieList */}
       {data ? (

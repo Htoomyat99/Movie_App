@@ -1,7 +1,5 @@
 import Config from 'react-native-config';
 
-const api = Config.API_URL;
-
 const timeOutForFetch = 5000;
 
 //FetchPost

@@ -14,8 +14,10 @@ import BodyComponent from '../../components/MovieDetail/BodyComponent';
 import {AuthContext} from '../../context/Context';
 
 const HomeDetailScreen = ({route, navigation}) => {
-  // const {data} = route.params;
+  const {data} = route.params;
   const {isFavorite, changeIsFavorite} = useContext(AuthContext);
+
+  console.log('movieDetailData >>>', data);
 
   const playMovieAction = () => {
     console.log('movie play');
@@ -52,9 +54,17 @@ const HomeDetailScreen = ({route, navigation}) => {
         backAction={backAction}
         favoriteAction={favoriteAction}
         isFavorite={isFavorite}
+        uri={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
+        rating={data.vote_average.toFixed(2)}
+        releaseDate={data.release_date.substring(0, 4)}
       />
 
-      <BodyComponent />
+      <BodyComponent
+        genresData={data.genres}
+        runtime={data.runtime}
+        movieTitle={data.original_title}
+        overView={data.overview}
+      />
     </View>
   );
 };

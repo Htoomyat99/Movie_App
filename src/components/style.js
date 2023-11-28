@@ -10,15 +10,18 @@ const style = StyleSheet.create({
   titleText: {
     fontFamily: 'PTSans-Bold',
     fontSize: hp(2.2),
-    color: movieColor.primary,
+    color: movieColor.white,
+    width: wp(80),
   },
+
   nameText: {
-    fontFamily: 'PTSans-Regular',
+    fontFamily: 'PTSans-Bold',
     fontSize: hp(1.8),
-    color: movieColor.primary,
+    color: movieColor.white,
     marginTop: hp(1),
   },
   comingSoonContainer: {
+    zIndex: 1,
     backgroundColor: movieColor.primary,
     width: wp(25),
     height: wp(9.5),
@@ -29,7 +32,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    top: hp(2.5),
+    top: hp(3),
     right: hp(1),
   },
   comingSoonText: {
@@ -61,7 +64,6 @@ const style = StyleSheet.create({
 
   //MovieList
   mainContainer: {
-    marginTop: hp(3),
     marginLeft: wp(5),
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -70,16 +72,17 @@ const style = StyleSheet.create({
   movieImage: {
     width: wp(25),
     height: hp(18),
-    borderRadius: wp(3),
+    borderRadius: wp(1),
   },
   textContainer: {
     marginLeft: wp(8),
+    justifyContent: 'center',
   },
   movieTitleText: {
     fontFamily: 'PTSans-Bold',
     fontSize: hp(2.2),
     color: movieColor.black,
-    marginTop: hp(1.8),
+    width: wp(55),
   },
   relaseText: {
     fontFamily: 'PTSans-Regular',
@@ -88,8 +91,12 @@ const style = StyleSheet.create({
     marginTop: hp(1.2),
   },
   favoriteContainer: {
-    marginTop: hp(2),
-    marginLeft: wp(20),
+    position: 'absolute',
+    top: hp(1),
+    left: wp(2),
+    backgroundColor: '#ddd',
+    padding: wp(1.5),
+    borderRadius: wp(1),
   },
 
   //TextInput
@@ -110,7 +117,7 @@ const style = StyleSheet.create({
     paddingHorizontal: wp(3),
     fontFamily: 'PTSans-Regular',
     fontSize: hp(2),
-    color: movieColor.black,
+    color: movieColor.primary,
   },
 
   //NoDataFound
