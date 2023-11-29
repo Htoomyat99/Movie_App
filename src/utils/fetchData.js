@@ -4,8 +4,8 @@ const api = 'https://api.themoviedb.org/3/';
 const token =
   'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Zjk4ZTAxNWE4MjMzZTE3YzZhNDRiMWRiZDBjNGYyMyIsInN1YiI6IjY1NjQ1ZTI2OGYyNmJjMDBmZjZmYzc2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JU34yjlFkF_BO3YmFostPHvZN8BZ0bd678869QXjbbg';
 
-//FetchGetByToken
-export const FetchGetByToken = async (route, signal) => {
+//fetchGetByToken
+export const fetchGetByToken = async (route, signal) => {
   try {
     const response = await fetch(api + route, {
       method: 'GET',

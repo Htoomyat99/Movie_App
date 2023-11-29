@@ -1,5 +1,5 @@
 import {View, Text, StatusBar, ToastAndroid} from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 //context
 import {AuthContext} from '../../context/Context';
@@ -7,13 +7,20 @@ import {AuthContext} from '../../context/Context';
 //components
 import HeaderComponent from '../../components/MovieDetail/HeaderComponent';
 import BodyComponent from '../../components/MovieDetail/BodyComponent';
+import {NetErrorToast} from '../../utils/NetErrorToast';
 
 const HomeDetailScreen = ({route, navigation}) => {
   const {data} = route.params;
-  const {isFavorite, changeIsFavorite, changeFavoriteList, favoriteList} =
+  const {isFavorite, changeIsFavorite, changeFavoriteList, favoriteList, net} =
     useContext(AuthContext);
 
   // console.log('movieDetailData >>>', data);
+
+  useEffect(() => {
+    if (!net) {
+      NetErrorToast();
+    }
+  }, [net]);
 
   const playMovieAction = () => {
     console.log('movie play');

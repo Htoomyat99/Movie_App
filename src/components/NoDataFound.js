@@ -9,7 +9,7 @@ import AnimatedLottieView from 'lottie-react-native';
 //style
 import style from './style';
 
-const NoDataFound = () => {
+const NoDataFound = props => {
   return (
     <View
       style={{
@@ -23,7 +23,7 @@ const NoDataFound = () => {
         autoPlay
         loop={true}
       />
-      <Text style={style.noDataText}>No Favorite Found</Text>
+      <Text style={style.noDataText}>{props.text}</Text>
     </View>
   );
 };

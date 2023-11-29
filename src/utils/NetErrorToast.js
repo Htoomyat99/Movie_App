@@ -1,7 +1,7 @@
 import Toast from 'react-native-toast-message';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-export const NetErrorToast = () => {
+export const NetErrorToast = topOffset => {
   Toast.show({
     type: 'error',
     text1: 'No Internet Connection 😔',
@@ -9,6 +9,6 @@ export const NetErrorToast = () => {
     position: 'top',
     visibilityTime: 3000,
     autoHide: true,
-    topOffset: hp(1),
+    topOffset: hp(5),
   });
 };

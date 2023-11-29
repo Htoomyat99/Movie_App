@@ -36,12 +36,6 @@ const AppNavigator = () => {
   };
 
   useEffect(() => {
-    if (!net) {
-      NetErrorToast();
-    }
-  }, [net]);
-
-  useEffect(() => {
     onlineManager.setEventListener(setOnline => {
       return NetInfo.addEventListener(state => {
         setOnline(state.isConnected);

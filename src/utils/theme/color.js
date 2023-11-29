@@ -1,6 +1,7 @@
 export const movieColor = {
   primary: '#960019',
   primaryContent: 'pink',
+  primaryDisable: '#CCCCCC',
 
   //white
   white: '#fff',

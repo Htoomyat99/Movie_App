@@ -29,17 +29,14 @@ import SlideImage from '../../components/SlideImage';
 import carouselData from '../../data/data';
 import MovieList from '../../components/MovieRenderComponent';
 import {err} from 'react-native-svg';
-import {FetchGetByToken} from '../../utils/fetchData';
+import {fetchGetByToken, fetchPostByToken} from '../../utils/fetchData';
 import apiUrl from '../../utils/apiUrl';
-import Toast from 'react-native-toast-message';
-import AnimatedLottieView from 'lottie-react-native';
 import LoadingModalComponent from '../../components/LoadingModal';
 
 const HomeScreen = ({navigation}) => {
   const {net} = useContext(AuthContext);
   const [topRatedMovieData, setTopRatedMovieData] = useState([]);
-  const [upComingMovieData, setUpcomingMovieData] = useState(null);
-  // const [movieDeatilData, setMovieDetailData] = useState(null);
+  const [upComingMovieData, setUpcomingMovieData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [paginateLoading, setPaginateLoading] = useState(false);
@@ -69,7 +66,7 @@ const HomeScreen = ({navigation}) => {
       return;
     }
     setIsLoading(true);
-    const response = await FetchGetByToken(apiUrl.upcoming, signal);
+    const response = await fetchGetByToken(apiUrl.upcoming, signal);
 
     if (response && response.results) {
       setUpcomingMovieData(response);
@@ -87,7 +84,7 @@ const HomeScreen = ({navigation}) => {
       return;
     }
 
-    const response = await FetchGetByToken(
+    const response = await fetchGetByToken(
       apiUrl.top_rated + `?page=${page}`,
       signal,
     );
@@ -112,7 +109,11 @@ const HomeScreen = ({navigation}) => {
       return;
     }
     setIsLoading(true);
-    const response = await FetchGetByToken(movie_id, signal);
+
+    const response = await fetchGetByToken(
+      `${apiUrl.movie}${movie_id}`,
+      signal,
+    );
     // console.log('response >>>', response);
     if (response) {
       navigation.navigate('HomeDetail', {data: response});
@@ -120,7 +121,7 @@ const HomeScreen = ({navigation}) => {
         setIsLoading(false);
       }, 1000);
     } else {
-      // console.log('error', response.status_message);
+      console.log('error', response.status_message);
       setIsLoading(false);
     }
   };
@@ -133,7 +134,9 @@ const HomeScreen = ({navigation}) => {
           onPress={() => goMovieDetail(item)}
           movieTitle={item.original_title}
           relaseDate={item.release_date}
-          uri={`https://image.tmdb.org/t/p/w500${item.backdrop_path}`}
+          uri={`https://image.tmdb.org/t/p/w500${
+            item.backdrop_path ? item.backdrop_path : item.poster_path
+          }`}
           rating={item.vote_average.toFixed(2)}
           popularity={item.popularity}
         />
@@ -186,6 +189,7 @@ const HomeScreen = ({navigation}) => {
       />
 
       {/* carousel */}
+
       <View style={{marginTop: StatusBar.currentHeight}}>
         <SlideImage
           carouselData={upComingMovieData?.results}

@@ -5,6 +5,8 @@ import {
   TextInput,
   FlatList,
   StatusBar,
+  ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -23,15 +25,18 @@ import {NetErrorToast} from '../../utils/NetErrorToast';
 import SearchInput from '../../components/SearchInput';
 import carouselData from '../../data/data';
 import MovieList from '../../components/MovieRenderComponent';
-import {FetchGetByToken, fetchPostByToken} from '../../utils/fetchData';
+import {fetchGetByToken, fetchPostByToken} from '../../utils/fetchData';
 import apiUrl from '../../utils/apiUrl';
 import LoadingModalComponent from '../../components/LoadingModal';
+import NoDataFound from '../../components/NoDataFound';
 
 const SearchScreen = ({navigation}) => {
   const [inputValue, setInputValue] = useState('');
-  const [popularMovieData, setPopularMovieData] = useState(null);
+  const [popularMovieData, setPopularMovieData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [text, setText] = useState('Harry Potter');
+  const [searchData, setSearchData] = useState(null);
+  const [page, setPage] = useState(1);
+  const [paginateLoading, setPaginateLoading] = useState(false);
 
   const {net} = useContext(AuthContext);
 
@@ -41,15 +46,15 @@ const SearchScreen = ({navigation}) => {
   // console.log('data >>>', popularMovieData ? popularMovieData : []);
 
   useEffect(() => {
-    if (!net) {
-      NetErrorToast();
-    }
+    fetchPopularMovie();
+    // fetchMovieSearch(text);
   }, []);
 
   useEffect(() => {
-    fetchPopularMovie();
-    fetchMovieSearch();
-  }, []);
+    if (!net) {
+      NetErrorToast();
+    }
+  }, [net]);
 
   const fetchPopularMovie = async () => {
     if (!net) {
@@ -57,16 +62,22 @@ const SearchScreen = ({navigation}) => {
       setIsLoading(false);
       return;
     }
-    setIsLoading(true);
 
-    const response = await FetchGetByToken(apiUrl.popular, signal);
+    const response = await fetchGetByToken(
+      apiUrl.popular + `?page=${page}`,
+      signal,
+    );
     // console.log('popular >>>', response);
     if (response && response.results) {
-      setPopularMovieData(response);
+      setPage(prevPage => prevPage + 1);
+      const newData = response?.results.slice(0, 10);
+      setPopularMovieData(prev => [...prev, ...newData]);
       setIsLoading(false);
+      setPaginateLoading(false);
     } else {
       console.log('error', response.status_message);
       setIsLoading(false);
+      setPaginateLoading(false);
     }
   };
 
@@ -77,7 +88,11 @@ const SearchScreen = ({navigation}) => {
       return;
     }
     setIsLoading(true);
-    const response = await FetchGetByToken(movie_id, signal);
+
+    const response = await fetchGetByToken(
+      `${apiUrl.movie}${movie_id}`,
+      signal,
+    );
     // console.log('response >>>', response);
     if (response) {
       navigation.navigate('HomeDetail', {data: response});
@@ -90,44 +105,8 @@ const SearchScreen = ({navigation}) => {
     }
   };
 
-  // const fetchMovieSearch = async () => {
-  //   let data = {
-  //     query: 'text',
-  //     include_adult: 'false',
-  //   };
-
-  //   if (!net) {
-  //     NetErrorToast();
-  //     setIsLoading(false);
-  //     return;
-  //   }
-  //   setIsLoading(true);
-
-  //   const response = fetchPostByToken(apiUrl.search, data, signal);
-  // };
-
-  const fetchMovieSearch = async () => {
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Zjk4ZTAxNWE4MjMzZTE3YzZhNDRiMWRiZDBjNGYyMyIsInN1YiI6IjY1NjQ1ZTI2OGYyNmJjMDBmZjZmYzc2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JU34yjlFkF_BO3YmFostPHvZN8BZ0bd678869QXjbbg',
-      },
-    };
-
-    await fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${text}&include_adult=false&language=en-US&page=1`,
-      options,
-    )
-      .then(response => response.json())
-      .then(response => console.log(response))
-      .catch(err => console.error(err));
-  };
-
   const onChangeText = text => {
     setInputValue(text);
-    console.log('inputValue >>>', inputValue);
   };
 
   const goSearchDetail = item => {
@@ -140,7 +119,9 @@ const SearchScreen = ({navigation}) => {
         <MovieList
           isFavorite={false}
           onPress={() => goSearchDetail(item)}
-          uri={`https://image.tmdb.org/t/p/w500${item.backdrop_path}`}
+          uri={`https://image.tmdb.org/t/p/w500${
+            item.backdrop_path ? item.backdrop_path : item.poster_path
+          }`}
           movieTitle={item.original_title}
           relaseDate={item.release_date}
           rating={item.vote_average.toFixed(2)}
@@ -150,7 +131,13 @@ const SearchScreen = ({navigation}) => {
     );
   };
 
-  const renderFooter = () => {};
+  const renderFooter = () => {
+    return (
+      paginateLoading && (
+        <ActivityIndicator size={'medium'} color={movieColor.primary} />
+      )
+    );
+  };
 
   const ItemSeparatorComponent = () => {
     return (
@@ -168,6 +155,38 @@ const SearchScreen = ({navigation}) => {
     return <LoadingModalComponent />;
   }
 
+  const loadMoreHandler = () => {
+    if (!paginateLoading) {
+      setPaginateLoading(true);
+      fetchPopularMovie();
+    }
+  };
+
+  const searchHandler = async () => {
+    if (!net) {
+      NetErrorToast();
+      setIsLoading(false);
+      return;
+    }
+
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Zjk4ZTAxNWE4MjMzZTE3YzZhNDRiMWRiZDBjNGYyMyIsInN1YiI6IjY1NjQ1ZTI2OGYyNmJjMDBmZjZmYzc2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JU34yjlFkF_BO3YmFostPHvZN8BZ0bd678869QXjbbg',
+      },
+    };
+
+    fetch(
+      `https://api.themoviedb.org/3/search/movie?query=${inputValue}&include_adult=false&language=en-US&page=1`,
+      options,
+    )
+      .then(response => response.json())
+      .then(response => setSearchData(response))
+      .catch(err => console.error(err));
+  };
+
   return (
     <View style={{flex: 1}}>
       <StatusBar
@@ -178,20 +197,32 @@ const SearchScreen = ({navigation}) => {
 
       {/* SearchInput */}
       <View style={{marginTop: StatusBar.currentHeight}}>
-        <SearchInput inputValue={inputValue} onChangeText={onChangeText} />
+        <SearchInput
+          inputValue={inputValue}
+          onChangeText={onChangeText}
+          onPress={searchHandler}
+        />
       </View>
 
       <Text style={style.headerText}>Popular Search</Text>
 
       {/* movieList */}
-      <FlatList
-        style={style.flatList}
-        data={popularMovieData?.results}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        ListFooterComponent={renderFooter}
-        ItemSeparatorComponent={ItemSeparatorComponent}
-      />
+
+      {searchData?.results.length <= 0 ? (
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <NoDataFound text={'No Data Found'} />
+        </View>
+      ) : (
+        <FlatList
+          style={style.flatList}
+          data={searchData != null ? searchData?.results : popularMovieData}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          ListFooterComponent={renderFooter}
+          ItemSeparatorComponent={ItemSeparatorComponent}
+          onEndReached={loadMoreHandler}
+        />
+      )}
     </View>
   );
 };

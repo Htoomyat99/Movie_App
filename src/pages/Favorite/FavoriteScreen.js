@@ -71,7 +71,7 @@ const FavoriteScreen = ({navigation}) => {
           keyExtractor={item => item.id}
         />
       ) : (
-        <NoDataFound />
+        <NoDataFound text={'No Favorite Found'} />
       )}
     </View>
   );

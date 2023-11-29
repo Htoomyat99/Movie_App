@@ -24,6 +24,12 @@ const style = StyleSheet.create({
     flex: 1,
     marginBottom: hp(10),
   },
+  emptyHeadContainer: {
+    width: wp(90),
+    height: hp(25),
+    backgroundColor: movieColor.light_beige,
+    borderRadius: wp(4),
+  },
 });
 
 export default style;
