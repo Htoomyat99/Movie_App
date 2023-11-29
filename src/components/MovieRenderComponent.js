@@ -22,6 +22,7 @@ const MovieList = props => {
           resizeMode="cover"
         />
       </View>
+
       <View style={style.textContainer}>
         <Text style={style.movieTitleText}>{props.movieTitle}</Text>
         <Text style={style.relaseText}>

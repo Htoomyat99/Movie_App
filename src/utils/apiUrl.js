@@ -1,4 +1,9 @@
 export default {
   //movie
-  getMovie: `550?api_key=${Config.API_KEY}`,
+  upcoming: 'movie/upcoming',
+  top_rated: 'movie/top_rated',
+  popular: 'movie/popular',
+
+  //search
+  search: 'search/movie?',
 };

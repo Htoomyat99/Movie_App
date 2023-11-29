@@ -11,7 +11,8 @@ const style = StyleSheet.create({
     fontSize: hp(2.2),
     color: movieColor.primary,
     marginLeft: wp(5),
-    marginVertical: hp(3),
+    marginTop: hp(3),
+    marginBottom: hp(1),
   },
   flatList: {
     flex: 1,

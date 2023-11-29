@@ -71,8 +71,8 @@ const style = StyleSheet.create({
   },
   movieImage: {
     width: wp(25),
-    height: hp(18),
-    borderRadius: wp(1),
+    height: hp(16),
+    borderRadius: wp(1.2),
   },
   textContainer: {
     marginLeft: wp(8),
@@ -80,13 +80,13 @@ const style = StyleSheet.create({
   },
   movieTitleText: {
     fontFamily: 'PTSans-Bold',
-    fontSize: hp(2.2),
+    fontSize: hp(2),
     color: movieColor.black,
     width: wp(55),
   },
   relaseText: {
     fontFamily: 'PTSans-Regular',
-    fontSize: hp(2),
+    fontSize: hp(1.8),
     color: movieColor.black,
     marginTop: hp(1.2),
   },
@@ -151,6 +151,42 @@ const style = StyleSheet.create({
     color: 'blue',
     fontFamily: 'PTSans-Regular',
     fontSize: hp(1.9),
+  },
+
+  //loadingModal
+  loadingView: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(52, 52, 52, 0)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  indicatorContainer: {
+    flex: 1,
+    width: wp(100),
+    height: hp(100),
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  content: {
+    backgroundColor: 'rgba(52, 52, 52, 0.40)',
+    borderRadius: hp(0.8),
+    paddingVertical: hp(1.8),
+    paddingHorizontal: wp(3.5),
+    marginBottom: hp(15),
+  },
+  otpLottie: {
+    width: hp(4.5),
+    height: hp(4.5),
+    alignSelf: 'center',
+  },
+  indicatorText: {
+    fontFamily: 'PTSans-Regular',
+    color: '#FFF',
+    fontSize: hp(1.8),
+    textAlign: 'center',
+    paddingHorizontal: wp(2),
   },
 });
 

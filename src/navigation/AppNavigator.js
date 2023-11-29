@@ -9,7 +9,6 @@ import {
 import NetInfo from '@react-native-community/netinfo';
 import {onlineManager} from 'react-query';
 import SplashScreen from 'react-native-splash-screen';
-import Config from 'react-native-config';
 
 //context
 import {AuthContext} from '../context/Context';
@@ -21,13 +20,18 @@ const AppNavigator = () => {
   const [isTemporary, setIsTemporary] = useState(true);
   const [net, setNet] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteList, setFavoriteList] = useState([]);
 
   const context = {
     net,
     isFavorite,
+    favoriteList,
 
     changeIsFavorite: val => {
       setIsFavorite(val);
+    },
+    changeFavoriteList: val => {
+      setFavoriteList(prev => [...prev, val]);
     },
   };
 
@@ -36,10 +40,6 @@ const AppNavigator = () => {
       NetErrorToast();
     }
   }, [net]);
-
-  useEffect(() => {
-    console.log('key >>>', typeof Config);
-  }, []);
 
   useEffect(() => {
     onlineManager.setEventListener(setOnline => {

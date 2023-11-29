@@ -17,15 +17,15 @@ import MovieList from '../../components/MovieRenderComponent';
 import {NetErrorToast} from '../../utils/NetErrorToast';
 
 const FavoriteScreen = ({navigation}) => {
-  const [data, setIsData] = useState(true);
-
-  const {net} = useContext(AuthContext);
+  const {net, favoriteList} = useContext(AuthContext);
 
   useEffect(() => {
     if (!net) {
       NetErrorToast();
     }
   }, [net]);
+
+  console.log('listFavorite >>>', favoriteList);
 
   const goMovieDetail = ({item}) => {
     navigation.navigate('HomeDetail', {data: item});
@@ -63,10 +63,10 @@ const FavoriteScreen = ({navigation}) => {
       </View>
 
       {/* movieList */}
-      {data ? (
+      {favoriteList.length > 0 ? (
         <FlatList
           style={style.flatList}
-          data={carouselData}
+          data={favoriteList}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />

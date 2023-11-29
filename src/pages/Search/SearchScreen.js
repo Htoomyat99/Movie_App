@@ -23,12 +23,22 @@ import {NetErrorToast} from '../../utils/NetErrorToast';
 import SearchInput from '../../components/SearchInput';
 import carouselData from '../../data/data';
 import MovieList from '../../components/MovieRenderComponent';
+import {FetchGetByToken, fetchPostByToken} from '../../utils/fetchData';
+import apiUrl from '../../utils/apiUrl';
+import LoadingModalComponent from '../../components/LoadingModal';
 
 const SearchScreen = ({navigation}) => {
   const [inputValue, setInputValue] = useState('');
   const [popularMovieData, setPopularMovieData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [text, setText] = useState('Harry Potter');
 
   const {net} = useContext(AuthContext);
+
+  let controller = new AbortController();
+  const signal = controller.signal;
+
+  // console.log('data >>>', popularMovieData ? popularMovieData : []);
 
   useEffect(() => {
     if (!net) {
@@ -38,43 +48,81 @@ const SearchScreen = ({navigation}) => {
 
   useEffect(() => {
     fetchPopularMovie();
+    fetchMovieSearch();
   }, []);
 
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Zjk4ZTAxNWE4MjMzZTE3YzZhNDRiMWRiZDBjNGYyMyIsInN1YiI6IjY1NjQ1ZTI2OGYyNmJjMDBmZjZmYzc2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JU34yjlFkF_BO3YmFostPHvZN8BZ0bd678869QXjbbg',
-    },
-  };
-
   const fetchPopularMovie = async () => {
-    try {
-      const response = await fetch(
-        'https://api.themoviedb.org/3/movie/popular',
-        options,
-      );
-      const data = await response.json();
-      setPopularMovieData(data);
-    } catch (error) {
-      console.error('Error fetching UpcomingMovieData >>>', error);
+    if (!net) {
+      NetErrorToast();
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+
+    const response = await FetchGetByToken(apiUrl.popular, signal);
+    // console.log('popular >>>', response);
+    if (response && response.results) {
+      setPopularMovieData(response);
+      setIsLoading(false);
+    } else {
+      console.log('error', response.status_message);
+      setIsLoading(false);
     }
   };
-
-  // console.log('data >>>', popularMovieData ? popularMovieData : []);
 
   const fetchMovieDetail = async movie_id => {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/movie/${movie_id}`,
-        options,
-      );
-      const data = await response.json();
-      navigation.navigate('HomeDetail', {data: data});
-    } catch (error) {
-      console.error('Error fetching MovieDetail Data >>>', err);
+    if (!net) {
+      NetErrorToast();
+      setIsLoading(false);
+      return;
     }
+    setIsLoading(true);
+    const response = await FetchGetByToken(movie_id, signal);
+    // console.log('response >>>', response);
+    if (response) {
+      navigation.navigate('HomeDetail', {data: response});
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    } else {
+      // console.log('error', response.status_message);
+      setIsLoading(false);
+    }
+  };
+
+  // const fetchMovieSearch = async () => {
+  //   let data = {
+  //     query: 'text',
+  //     include_adult: 'false',
+  //   };
+
+  //   if (!net) {
+  //     NetErrorToast();
+  //     setIsLoading(false);
+  //     return;
+  //   }
+  //   setIsLoading(true);
+
+  //   const response = fetchPostByToken(apiUrl.search, data, signal);
+  // };
+
+  const fetchMovieSearch = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization:
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Zjk4ZTAxNWE4MjMzZTE3YzZhNDRiMWRiZDBjNGYyMyIsInN1YiI6IjY1NjQ1ZTI2OGYyNmJjMDBmZjZmYzc2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JU34yjlFkF_BO3YmFostPHvZN8BZ0bd678869QXjbbg',
+      },
+    };
+
+    await fetch(
+      `https://api.themoviedb.org/3/search/movie?query=${text}&include_adult=false&language=en-US&page=1`,
+      options,
+    )
+      .then(response => response.json())
+      .then(response => console.log(response))
+      .catch(err => console.error(err));
   };
 
   const onChangeText = text => {
@@ -88,7 +136,7 @@ const SearchScreen = ({navigation}) => {
 
   const renderItem = ({item}, index) => {
     return (
-      <View style={{marginBottom: hp(2.5)}}>
+      <View style={{marginVertical: hp(1.5)}}>
         <MovieList
           isFavorite={false}
           onPress={() => goSearchDetail(item)}
@@ -101,6 +149,24 @@ const SearchScreen = ({navigation}) => {
       </View>
     );
   };
+
+  const renderFooter = () => {};
+
+  const ItemSeparatorComponent = () => {
+    return (
+      <View
+        style={{
+          height: 0.5,
+          width: '100%',
+          backgroundColor: '#C8C8C8',
+        }}
+      />
+    );
+  };
+
+  if (isLoading) {
+    return <LoadingModalComponent />;
+  }
 
   return (
     <View style={{flex: 1}}>
@@ -123,6 +189,8 @@ const SearchScreen = ({navigation}) => {
         data={popularMovieData?.results}
         renderItem={renderItem}
         keyExtractor={item => item.id}
+        ListFooterComponent={renderFooter}
+        ItemSeparatorComponent={ItemSeparatorComponent}
       />
     </View>
   );

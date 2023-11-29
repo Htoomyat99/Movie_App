@@ -1,23 +1,19 @@
-import {
-  View,
-  Text,
-  StatusBar,
-  Image,
-  TouchableOpacity,
-  ToastAndroid,
-} from 'react-native';
+import {View, Text, StatusBar, ToastAndroid} from 'react-native';
 import React, {useContext, useState} from 'react';
+
+//context
+import {AuthContext} from '../../context/Context';
 
 //components
 import HeaderComponent from '../../components/MovieDetail/HeaderComponent';
 import BodyComponent from '../../components/MovieDetail/BodyComponent';
-import {AuthContext} from '../../context/Context';
 
 const HomeDetailScreen = ({route, navigation}) => {
   const {data} = route.params;
-  const {isFavorite, changeIsFavorite} = useContext(AuthContext);
+  const {isFavorite, changeIsFavorite, changeFavoriteList, favoriteList} =
+    useContext(AuthContext);
 
-  console.log('movieDetailData >>>', data);
+  // console.log('movieDetailData >>>', data);
 
   const playMovieAction = () => {
     console.log('movie play');
@@ -35,6 +31,7 @@ const HomeDetailScreen = ({route, navigation}) => {
     changeIsFavorite(!isFavorite);
     if (!isFavorite) {
       ToastAndroid.show('Add to Favorite Successfully', ToastAndroid.SHORT);
+      changeFavoriteList(data);
     } else {
       ToastAndroid.show('Remove to Favorite Successfully', ToastAndroid.SHORT);
     }
@@ -45,7 +42,7 @@ const HomeDetailScreen = ({route, navigation}) => {
       <StatusBar
         translucent
         backgroundColor="transparent"
-        barStyle="dark-content"
+        barStyle={'light-content'}
       />
 
       <HeaderComponent

@@ -5,9 +5,14 @@ import {
   FlatList,
   StatusBar,
   TouchableOpacity,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 
 //style
 import style from './style';
@@ -24,12 +29,23 @@ import SlideImage from '../../components/SlideImage';
 import carouselData from '../../data/data';
 import MovieList from '../../components/MovieRenderComponent';
 import {err} from 'react-native-svg';
+import {FetchGetByToken} from '../../utils/fetchData';
+import apiUrl from '../../utils/apiUrl';
+import Toast from 'react-native-toast-message';
+import AnimatedLottieView from 'lottie-react-native';
+import LoadingModalComponent from '../../components/LoadingModal';
 
 const HomeScreen = ({navigation}) => {
   const {net} = useContext(AuthContext);
-  const [movieData, setMovieData] = useState(null);
+  const [topRatedMovieData, setTopRatedMovieData] = useState([]);
   const [upComingMovieData, setUpcomingMovieData] = useState(null);
   // const [movieDeatilData, setMovieDetailData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [paginateLoading, setPaginateLoading] = useState(false);
+
+  let controller = new AbortController();
+  const signal = controller.signal;
 
   useEffect(() => {
     if (!net) {
@@ -37,68 +53,81 @@ const HomeScreen = ({navigation}) => {
     }
   }, [net]);
 
+  useEffect(() => {
+    fetchTopRatedMovieData();
+    fetchUpcomingMoveiData();
+  }, []);
+
   const goMovieDetail = item => {
     fetchMovieDetail(item.id);
   };
 
-  useEffect(() => {
-    fetchMovieData();
-    fetchUpcomingMoveiData();
-  }, []);
-
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Zjk4ZTAxNWE4MjMzZTE3YzZhNDRiMWRiZDBjNGYyMyIsInN1YiI6IjY1NjQ1ZTI2OGYyNmJjMDBmZjZmYzc2NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JU34yjlFkF_BO3YmFostPHvZN8BZ0bd678869QXjbbg',
-    },
-  };
-
   const fetchUpcomingMoveiData = async () => {
-    try {
-      const response = await fetch(
-        'https://api.themoviedb.org/3/movie/upcoming',
-        options,
-      );
-      const data = await response.json();
-      setUpcomingMovieData(data);
-    } catch (error) {
-      console.error('Error fetching UpcomingMovieData >>>', err);
+    if (!net) {
+      NetErrorToast();
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    const response = await FetchGetByToken(apiUrl.upcoming, signal);
+
+    if (response && response.results) {
+      setUpcomingMovieData(response);
+      setIsLoading(false);
+    } else {
+      console.log('error', response.status_message);
+      setIsLoading(false);
     }
   };
 
-  const fetchMovieData = async () => {
-    try {
-      const response = await fetch(
-        'https://api.themoviedb.org/3/movie/top_rated',
-        options,
-      );
-      const data = await response.json();
+  const fetchTopRatedMovieData = async () => {
+    if (!net) {
+      NetErrorToast();
+      setIsLoading(false);
+      return;
+    }
 
-      // Update the state with the received movie data
-      setMovieData(data);
-    } catch (error) {
-      console.error('Error fetching movie data:', error);
+    const response = await FetchGetByToken(
+      apiUrl.top_rated + `?page=${page}`,
+      signal,
+    );
+    // console.log('response >>>', response);
+    if (response && response.results) {
+      setPage(prevPage => prevPage + 1);
+      const newData = response?.results.slice(0, 10);
+      setTopRatedMovieData(prev => [...prev, ...newData]);
+      setIsLoading(false);
+      setPaginateLoading(false);
+    } else {
+      console.log('error', response.status_message);
+      setIsLoading(false);
+      setPaginateLoading(false);
     }
   };
 
   const fetchMovieDetail = async movie_id => {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/movie/${movie_id}`,
-        options,
-      );
-      const data = await response.json();
-      navigation.navigate('HomeDetail', {data: data});
-    } catch (error) {
-      console.error('Error fetching MovieDetail Data >>>', err);
+    if (!net) {
+      NetErrorToast();
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
+    const response = await FetchGetByToken(movie_id, signal);
+    // console.log('response >>>', response);
+    if (response) {
+      navigation.navigate('HomeDetail', {data: response});
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    } else {
+      // console.log('error', response.status_message);
+      setIsLoading(false);
     }
   };
 
-  const renderItem = ({item}, index) => {
+  const renderItem = ({item}) => {
     return (
-      <View style={{marginBottom: hp(2.5)}}>
+      <View style={{marginVertical: hp(1.5)}}>
         <MovieList
           isFavorite={false}
           onPress={() => goMovieDetail(item)}
@@ -110,7 +139,33 @@ const HomeScreen = ({navigation}) => {
         />
       </View>
     );
-    // console.log('movei>>>', item);
+  };
+
+  const renderFooter = () => {
+    return (
+      paginateLoading && (
+        <ActivityIndicator size={'medium'} color={movieColor.primary} />
+      )
+    );
+  };
+
+  const ItemSeparatorComponent = () => {
+    return (
+      <View
+        style={{
+          height: 0.5,
+          width: '100%',
+          backgroundColor: '#C8C8C8',
+        }}
+      />
+    );
+  };
+
+  const loadMoreHandler = () => {
+    if (!paginateLoading) {
+      setPaginateLoading(true);
+      fetchTopRatedMovieData();
+    }
   };
 
   // console.log(
@@ -118,19 +173,19 @@ const HomeScreen = ({navigation}) => {
   //   JSON.stringify(movieData ? movieData.results : 'null'),
   // );
 
+  if (isLoading) {
+    return <LoadingModalComponent />;
+  }
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: movieColor.white,
-      }}>
+    <View style={style.container}>
       <StatusBar
         translucent
         backgroundColor="transparent"
         barStyle="dark-content"
       />
 
+      {/* carousel */}
       <View style={{marginTop: StatusBar.currentHeight}}>
         <SlideImage
           carouselData={upComingMovieData?.results}
@@ -145,9 +200,12 @@ const HomeScreen = ({navigation}) => {
       <FlatList
         showsVerticalScrollIndicator={false}
         style={style.flatList}
-        data={movieData?.results}
+        data={topRatedMovieData}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={renderFooter}
+        ItemSeparatorComponent={ItemSeparatorComponent}
+        onEndReached={loadMoreHandler}
       />
     </View>
   );

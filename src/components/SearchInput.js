@@ -20,7 +20,7 @@ const SearchInput = props => {
         placeholder="Search"
         value={props.inputValue}
         onChangeText={props.onChangeText}
-        placeholderTextColor="#ddd"
+        placeholderTextColor="#bbb"
       />
     </View>
   );
