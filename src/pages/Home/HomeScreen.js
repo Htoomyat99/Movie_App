@@ -42,6 +42,11 @@ const HomeScreen = ({navigation}) => {
   let controller = new AbortController();
   const signal = controller.signal;
 
+  // console.log(
+  //   'UPcomingdata >>',
+  //   JSON.stringify(movieData ? movieData.results : 'null'),
+  // );
+
   useEffect(() => {
     if (!net) {
       NetErrorToast();
@@ -169,15 +174,6 @@ const HomeScreen = ({navigation}) => {
     }
   };
 
-  // console.log(
-  //   'UPcomingdata >>',
-  //   JSON.stringify(movieData ? movieData.results : 'null'),
-  // );
-
-  if (isLoading) {
-    return <LoadingModalComponent />;
-  }
-
   return (
     <View style={style.container}>
       <StatusBar
@@ -209,6 +205,8 @@ const HomeScreen = ({navigation}) => {
         ItemSeparatorComponent={ItemSeparatorComponent}
         onEndReached={loadMoreHandler}
       />
+
+      {isLoading && <LoadingModalComponent />}
     </View>
   );
 };

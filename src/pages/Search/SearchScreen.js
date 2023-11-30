@@ -184,10 +184,6 @@ const SearchScreen = ({navigation}) => {
       .catch(err => console.error(err));
   };
 
-  if (isLoading) {
-    return <LoadingModalComponent />;
-  }
-
   return (
     <View style={{flex: 1}}>
       <StatusBar
@@ -224,6 +220,8 @@ const SearchScreen = ({navigation}) => {
           onEndReached={loadMoreHandler}
         />
       )}
+
+      {isLoading && <LoadingModalComponent />}
     </View>
   );
 };

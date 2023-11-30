@@ -91,10 +91,6 @@ const FavoriteScreen = ({navigation}) => {
     );
   };
 
-  if (isLoading) {
-    return <LoadingModalComponent />;
-  }
-
   return (
     <View style={{flex: 1}}>
       <StatusBar
@@ -119,6 +115,8 @@ const FavoriteScreen = ({navigation}) => {
       ) : (
         <NoDataFound text={'No Favorite Found'} />
       )}
+
+      {isLoading && <LoadingModalComponent />}
     </View>
   );
 };
