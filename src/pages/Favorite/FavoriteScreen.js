@@ -1,23 +1,29 @@
 import {View, Text, FlatList, StatusBar} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 //style
 import style from './style';
 
 //context
 import {AuthContext} from '../../context/Context';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 //components
 import NoDataFound from '../../components/NoDataFound';
-import carouselData from '../../data/data';
 import MovieList from '../../components/MovieRenderComponent';
+import LoadingModalComponent from '../../components/LoadingModal';
 
 //utils
 import {NetErrorToast} from '../../utils/NetErrorToast';
+import apiUrl from '../../utils/apiUrl';
+import {fetchGetByToken} from '../../utils/fetchData';
 
 const FavoriteScreen = ({navigation}) => {
   const {net, favoriteList} = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
+
+  let controller = new AbortController();
+  const signal = controller.signal;
 
   useEffect(() => {
     if (!net) {
@@ -25,30 +31,69 @@ const FavoriteScreen = ({navigation}) => {
     }
   }, [net]);
 
-  console.log('listFavorite >>>', favoriteList);
+  // console.log('favoriteScreen >>>', favoriteList);
 
-  const goMovieDetail = ({item}) => {
-    navigation.navigate('HomeDetail', {data: item});
+  const goMovieDetail = item => {
+    fetchMovieDetail(item.id);
   };
 
-  const renderItem = (item, index) => {
-    const imageUrl =
-      'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png';
+  const fetchMovieDetail = async movie_id => {
+    if (!net) {
+      NetErrorToast();
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(true);
 
+    const response = await fetchGetByToken(
+      `${apiUrl.movie}${movie_id}`,
+      signal,
+    );
+    // console.log('response >>>', response);
+    if (response) {
+      navigation.navigate('HomeDetail', {data: response});
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    } else {
+      // console.log('error', response.status_message);
+      setIsLoading(false);
+    }
+  };
+
+  const ItemSeparatorComponent = () => {
     return (
-      <View style={{marginTop: hp(3)}}>
+      <View
+        style={{
+          height: 0.5,
+          width: '100%',
+          backgroundColor: '#C8C8C8',
+        }}
+      />
+    );
+  };
+
+  const renderItem = ({item}, index) => {
+    return (
+      <View style={{marginVertical: hp(1.5)}}>
         <MovieList
           isFavorite={true}
           onPress={() => goMovieDetail(item)}
-          uri={imageUrl}
-          movieTitle={'One Piece: The Flim Red'}
-          relaseDate={2022}
-          rating={7.02}
-          popularity={140}
+          relaseDate={item.release_date}
+          movieTitle={item.original_title}
+          uri={`https://image.tmdb.org/t/p/w500${
+            item.backdrop_path ? item.backdrop_path : item.poster_path
+          }`}
+          rating={item.vote_average.toFixed(2)}
+          popularity={item.popularity}
         />
       </View>
     );
   };
+
+  if (isLoading) {
+    return <LoadingModalComponent />;
+  }
 
   return (
     <View style={{flex: 1}}>
@@ -63,12 +108,13 @@ const FavoriteScreen = ({navigation}) => {
       </View>
 
       {/* movieList */}
-      {favoriteList.length > 0 ? (
+      {favoriteList.length != 0 ? (
         <FlatList
           style={style.flatList}
           data={favoriteList}
           renderItem={renderItem}
           keyExtractor={item => item.id}
+          ItemSeparatorComponent={ItemSeparatorComponent}
         />
       ) : (
         <NoDataFound text={'No Favorite Found'} />

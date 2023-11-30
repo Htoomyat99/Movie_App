@@ -13,8 +13,6 @@ const HomeStackNavigator = () => {
       screenOptions={{
         headerShown: false,
         headerBackTitleVisible: false,
-        // gestureDirection: 'horizontal',
-        // gestureEnabled: true,
       }}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="HomeDetail" component={HomeDetailScreen} />

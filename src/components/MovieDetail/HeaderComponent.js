@@ -1,5 +1,5 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import style from './style';
 import {
   widthPercentageToDP as wp,
@@ -14,8 +14,17 @@ import TrailerIcon from '../../../assets/icons/TrailerIcon';
 import FavoriteIcon from '../../../assets/icons/FavoriteIcon';
 import FavoriteFilled from '../../../assets/icons/FavoriteFilled';
 import {movieColor} from '../../utils/theme/color';
+import {AuthContext} from '../../context/Context';
 
 const HeaderComponent = props => {
+  const {favoriteList} = useContext(AuthContext);
+
+  const foundMovie =
+    favoriteList.length > 0 &&
+    favoriteList.find(item => item.id === props.data.id);
+
+  // console.log('foundMovie >>>', props.isFavorite, foundMovie);
+
   return (
     <View style={{zIndex: 1}}>
       <Image
@@ -43,7 +52,7 @@ const HeaderComponent = props => {
           {right: wp(6), backgroundColor: '#eee'},
         ]}
         onPress={props.favoriteAction}>
-        {props.isFavorite ? (
+        {props.isFavorite && foundMovie ? (
           <FavoriteFilled />
         ) : (
           <FavoriteIcon color={movieColor.black} />

@@ -7,12 +7,20 @@ import {AuthContext} from '../../context/Context';
 //components
 import HeaderComponent from '../../components/MovieDetail/HeaderComponent';
 import BodyComponent from '../../components/MovieDetail/BodyComponent';
+
+//utils
 import {NetErrorToast} from '../../utils/NetErrorToast';
 
 const HomeDetailScreen = ({route, navigation}) => {
   const {data} = route.params;
-  const {isFavorite, changeIsFavorite, changeFavoriteList, favoriteList, net} =
-    useContext(AuthContext);
+  const {
+    isFavorite,
+    changeIsFavorite,
+    changeFavoriteList,
+    favoriteList,
+    net,
+    changeUpdateList,
+  } = useContext(AuthContext);
 
   // console.log('movieDetailData >>>', data);
 
@@ -23,11 +31,11 @@ const HomeDetailScreen = ({route, navigation}) => {
   }, [net]);
 
   const playMovieAction = () => {
-    console.log('movie play');
+    ToastAndroid.show('Sory, Not available at the moment', ToastAndroid.SHORT);
   };
 
   const playTrailerAction = () => {
-    console.log('trailer play');
+    ToastAndroid.show('Sory, Not available at the moment', ToastAndroid.SHORT);
   };
 
   const backAction = () => {
@@ -35,13 +43,24 @@ const HomeDetailScreen = ({route, navigation}) => {
   };
 
   const favoriteAction = () => {
-    changeIsFavorite(!isFavorite);
-    if (!isFavorite) {
-      ToastAndroid.show('Add to Favorite Successfully', ToastAndroid.SHORT);
-      changeFavoriteList(data);
-    } else {
-      ToastAndroid.show('Remove to Favorite Successfully', ToastAndroid.SHORT);
+    if (favoriteList.lenght != 0) {
+      const foundMovie = favoriteList.find(item => item.id === data.id);
+      const updatedMovies = favoriteList.filter(movie => movie.id !== data.id);
+      if (foundMovie) {
+        changeUpdateList(updatedMovies);
+        changeIsFavorite(false);
+        ToastAndroid.show(
+          'Remove from Favorite Successfully',
+          ToastAndroid.SHORT,
+        );
+      } else {
+        changeFavoriteList(data);
+        changeIsFavorite(true);
+        ToastAndroid.show('Add to Favorite Successfully', ToastAndroid.SHORT);
+      }
     }
+    // appStorage.setItem('@movie_data', favoriteList);
+    // appStorage.setItem('@is_favorite', isFavorite);
   };
 
   return (
@@ -57,6 +76,7 @@ const HomeDetailScreen = ({route, navigation}) => {
         playTrailerAction={playTrailerAction}
         backAction={backAction}
         favoriteAction={favoriteAction}
+        data={data}
         isFavorite={isFavorite}
         uri={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
         rating={data.vote_average.toFixed(2)}

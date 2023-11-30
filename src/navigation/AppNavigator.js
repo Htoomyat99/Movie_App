@@ -2,19 +2,13 @@ import {View, StatusBar, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import HomeTabNavigator from './tab/HomeTabNavigator';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import NetInfo from '@react-native-community/netinfo';
-import {onlineManager} from 'react-query';
 import SplashScreen from 'react-native-splash-screen';
 
 //context
 import {AuthContext} from '../context/Context';
 
 //utils
-import {NetErrorToast} from '../utils/NetErrorToast';
 
 const AppNavigator = () => {
   const [isTemporary, setIsTemporary] = useState(true);
@@ -33,20 +27,12 @@ const AppNavigator = () => {
     changeFavoriteList: val => {
       setFavoriteList(prev => [...prev, val]);
     },
+    changeUpdateList: val => {
+      setFavoriteList(val);
+    },
   };
 
   useEffect(() => {
-    onlineManager.setEventListener(setOnline => {
-      return NetInfo.addEventListener(state => {
-        setOnline(state.isConnected);
-      });
-    });
-
-    // NetInfo.configure({
-    //   reachabilityUrl: 'https://apps.apple.com',
-    //   reachabilityTest: async response => response.status == 200,
-    // });
-
     const netListener = NetInfo.addEventListener(state => {
       setNet(state.isInternetReachable);
     });
@@ -60,6 +46,14 @@ const AppNavigator = () => {
     return () => {
       netListener();
     };
+  }, []);
+
+  useEffect(() => {
+    // const movieData = appStorage.getItem('@movie_data');
+    // const is_favorite = appStorage.getItem('@is_favorite');
+    // setFavoriteList(JSON.parse(movieData));
+    // setIsFavorite(is_favorite);
+    // console.log(isFavorite, movieData);
   }, []);
 
   if (isTemporary) {
@@ -85,7 +79,6 @@ const AppNavigator = () => {
   return (
     <AuthContext.Provider value={context}>
       <NavigationContainer>
-        {/* <LoadingModal /> */}
         <HomeTabNavigator />
       </NavigationContainer>
     </AuthContext.Provider>

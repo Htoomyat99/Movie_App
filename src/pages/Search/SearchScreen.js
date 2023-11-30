@@ -33,7 +33,7 @@ import NoDataFound from '../../components/NoDataFound';
 const SearchScreen = ({navigation}) => {
   const [inputValue, setInputValue] = useState('');
   const [popularMovieData, setPopularMovieData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchData, setSearchData] = useState(null);
   const [page, setPage] = useState(1);
   const [paginateLoading, setPaginateLoading] = useState(false);
@@ -47,7 +47,6 @@ const SearchScreen = ({navigation}) => {
 
   useEffect(() => {
     fetchPopularMovie();
-    // fetchMovieSearch(text);
   }, []);
 
   useEffect(() => {
@@ -62,6 +61,8 @@ const SearchScreen = ({navigation}) => {
       setIsLoading(false);
       return;
     }
+
+    setIsLoading(true);
 
     const response = await fetchGetByToken(
       apiUrl.popular + `?page=${page}`,
@@ -151,10 +152,6 @@ const SearchScreen = ({navigation}) => {
     );
   };
 
-  if (isLoading) {
-    return <LoadingModalComponent />;
-  }
-
   const loadMoreHandler = () => {
     if (!paginateLoading) {
       setPaginateLoading(true);
@@ -186,6 +183,10 @@ const SearchScreen = ({navigation}) => {
       .then(response => setSearchData(response))
       .catch(err => console.error(err));
   };
+
+  if (isLoading) {
+    return <LoadingModalComponent />;
+  }
 
   return (
     <View style={{flex: 1}}>

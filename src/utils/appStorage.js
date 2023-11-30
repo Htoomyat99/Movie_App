@@ -11,8 +11,8 @@ export const appStorage = {
       } else {
         storage.set(key, value);
       }
-    } catch (e) {
-      console.log("can't save data", e);
+    } catch (err) {
+      console.log('Cant save data >>>', err);
     }
   },
 
@@ -20,18 +20,18 @@ export const appStorage = {
     if (storage.contains(key)) {
       return storage.getString(key);
     } else {
-      console.log("Can't get data >>", key);
+      console.log('Cant get data >>>', key);
       return undefined;
     }
   },
 
   deleteItem: key => storage.delete(key),
 
-  containsItem: key => {
+  containItem: key => {
     return storage.contains(key);
   },
 
-  getAllKeys: () => {
+  getAllKey: () => {
     return storage.getAllKeys();
   },
 };

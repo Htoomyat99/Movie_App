@@ -23,14 +23,12 @@ import {AuthContext} from '../../context/Context';
 //utils
 import {movieColor} from '../../utils/theme/color';
 import {NetErrorToast} from '../../utils/NetErrorToast';
+import {fetchGetByToken} from '../../utils/fetchData';
+import apiUrl from '../../utils/apiUrl';
 
 //components
 import SlideImage from '../../components/SlideImage';
-import carouselData from '../../data/data';
 import MovieList from '../../components/MovieRenderComponent';
-import {err} from 'react-native-svg';
-import {fetchGetByToken, fetchPostByToken} from '../../utils/fetchData';
-import apiUrl from '../../utils/apiUrl';
 import LoadingModalComponent from '../../components/LoadingModal';
 
 const HomeScreen = ({navigation}) => {
