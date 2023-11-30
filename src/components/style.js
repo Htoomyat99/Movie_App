@@ -92,8 +92,8 @@ const style = StyleSheet.create({
   },
   favoriteContainer: {
     position: 'absolute',
-    top: hp(1),
-    left: wp(2),
+    top: hp(0),
+    left: wp(17),
     backgroundColor: '#ddd',
     padding: wp(1.5),
     borderRadius: wp(1),

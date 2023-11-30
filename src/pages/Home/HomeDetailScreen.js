@@ -43,7 +43,7 @@ const HomeDetailScreen = ({route, navigation}) => {
   };
 
   const favoriteAction = () => {
-    if (favoriteList.lenght != 0) {
+    if (favoriteList.length === 0 || favoriteList.length > 0) {
       const foundMovie = favoriteList.find(item => item.id === data.id);
       const updatedMovies = favoriteList.filter(movie => movie.id !== data.id);
       if (foundMovie) {

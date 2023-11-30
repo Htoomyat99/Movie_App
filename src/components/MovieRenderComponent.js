@@ -43,9 +43,9 @@ const MovieList = props => {
       </View>
 
       {props.isFavorite && (
-        <TouchableOpacity style={style.favoriteContainer}>
+        <View style={style.favoriteContainer}>
           <FavoriteFilled />
-        </TouchableOpacity>
+        </View>
       )}
     </TouchableOpacity>
   );
