@@ -7,6 +7,7 @@ import SplashScreen from 'react-native-splash-screen';
 
 //context
 import {AuthContext} from '../context/Context';
+import appStorage from '../utils/appStorage';
 
 //utils
 
@@ -46,6 +47,15 @@ const AppNavigator = () => {
     return () => {
       netListener();
     };
+  }, []);
+
+  useEffect(() => {
+    const data = appStorage.getItem('@movieData');
+    const favorite = appStorage.getItem('@favorite');
+    if (data?.length > 0) {
+      setFavoriteList(JSON.parse(data));
+      setIsFavorite(favorite);
+    }
   }, []);
 
   if (isTemporary) {

@@ -17,9 +17,10 @@ import LoadingModalComponent from '../../components/LoadingModal';
 import {NetErrorToast} from '../../utils/NetErrorToast';
 import apiUrl from '../../utils/apiUrl';
 import {fetchGetByToken} from '../../utils/fetchData';
+import appStorage from '../../utils/appStorage';
 
 const FavoriteScreen = ({navigation}) => {
-  const {net, favoriteList} = useContext(AuthContext);
+  const {net, favoriteList, isFavorite} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
 
   let controller = new AbortController();
@@ -30,6 +31,13 @@ const FavoriteScreen = ({navigation}) => {
       NetErrorToast();
     }
   }, [net]);
+
+  useEffect(() => {
+    if (favoriteList?.length > 0) {
+      appStorage.setItem('@movieData', JSON.stringify(favoriteList));
+      appStorage.setItem('@favorite', isFavorite);
+    }
+  }, []);
 
   // console.log('favoriteScreen >>>', favoriteList);
 
