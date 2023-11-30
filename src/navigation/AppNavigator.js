@@ -48,14 +48,6 @@ const AppNavigator = () => {
     };
   }, []);
 
-  useEffect(() => {
-    // const movieData = appStorage.getItem('@movie_data');
-    // const is_favorite = appStorage.getItem('@is_favorite');
-    // setFavoriteList(JSON.parse(movieData));
-    // setIsFavorite(is_favorite);
-    // console.log(isFavorite, movieData);
-  }, []);
-
   if (isTemporary) {
     return (
       <>

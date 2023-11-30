@@ -59,8 +59,6 @@ const HomeDetailScreen = ({route, navigation}) => {
         ToastAndroid.show('Add to Favorite Successfully', ToastAndroid.SHORT);
       }
     }
-    // appStorage.setItem('@movie_data', favoriteList);
-    // appStorage.setItem('@is_favorite', isFavorite);
   };
 
   return (
