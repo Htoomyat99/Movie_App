@@ -13,6 +13,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import VideoPlayer from 'react-native-video-player';
 
 //style
 import style from './style';
@@ -184,18 +185,20 @@ const HomeScreen = ({navigation}) => {
 
       {/* carousel */}
 
-      <View style={{marginTop: StatusBar.currentHeight}}>
+      {/* <View style={{marginTop: StatusBar.currentHeight}}>
         <SlideImage
           carouselData={upComingMovieData?.results}
           onPress={goMovieDetail}
         />
-      </View>
+      </View> */}
+
+      <View></View>
 
       {/* categoryTitle */}
       <Text style={style.titleText}>Top Rated Movies</Text>
 
       {/* movieLists */}
-      <FlatList
+      {/* <FlatList
         showsVerticalScrollIndicator={false}
         style={style.flatList}
         data={topRatedMovieData}
@@ -204,9 +207,25 @@ const HomeScreen = ({navigation}) => {
         ListFooterComponent={renderFooter}
         ItemSeparatorComponent={ItemSeparatorComponent}
         onEndReached={loadMoreHandler}
-      />
+      /> */}
 
-      {isLoading && <LoadingModalComponent />}
+      {/* {isLoading && <LoadingModalComponent />} */}
+
+      <VideoPlayer
+        video={require('../../../assets/video/myMoive.mp4')}
+        // video={{
+        //   uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+        // }}
+        // video={{
+        //   uri: 'https://www.themoviedb.org/movie/238-the-godfather/watch?locale=AD.mp4',
+        // }}
+        videoWidth={1600}
+        videoHeight={900}
+        thumbnail={{
+          uri: 'https://mehdinazari.com/wp-content/uploads/2021/11/thumbnail-url-wordpress.jpg',
+        }}
+        showDuration={true}
+      />
     </View>
   );
 };
