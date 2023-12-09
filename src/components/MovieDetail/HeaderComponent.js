@@ -1,4 +1,4 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, StatusBar} from 'react-native';
 import React, {useContext} from 'react';
 import style from './style';
 import {
@@ -15,6 +15,7 @@ import FavoriteIcon from '../../../assets/icons/FavoriteIcon';
 import FavoriteFilled from '../../../assets/icons/FavoriteFilled';
 import {movieColor} from '../../utils/theme/color';
 import {AuthContext} from '../../context/Context';
+import VideoPlayer from 'react-native-video-player';
 
 const HeaderComponent = props => {
   const {favoriteList} = useContext(AuthContext);
@@ -27,11 +28,24 @@ const HeaderComponent = props => {
 
   return (
     <View style={{zIndex: 1}}>
-      <Image
-        source={{uri: props.uri}}
-        style={{width: wp(100), height: hp(55)}}
-        resizeMode="cover"
-      />
+      <View style={{height: hp(55)}}>
+        <VideoPlayer
+          video={require('../../../assets/video/myMoive.mp4')}
+          // video={{
+          //   uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+          // }}
+          // video={{
+          //   uri: 'https://www.themoviedb.org/movie/238-the-godfather/watch?locale=AO.mp4',
+          // }}
+          videoWidth={1600}
+          videoHeight={hp(225)}
+          endThumbnail={{uri: props.uri}}
+          thumbnail={{
+            uri: props.uri,
+          }}
+          showDuration={true}
+        />
+      </View>
 
       {/* backIcon */}
       <TouchableOpacity
@@ -72,7 +86,7 @@ const HeaderComponent = props => {
       </View>
 
       {/* Button */}
-      <View style={style.buttonContainer}>
+      {/* <View style={style.buttonContainer}>
         <TouchableOpacity
           onPress={props.playMovieAction}
           style={style.playButtonContainer}
@@ -88,7 +102,7 @@ const HeaderComponent = props => {
           <TrailerIcon />
           <Text style={style.watchTrailerText}>Watch Trailer</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };

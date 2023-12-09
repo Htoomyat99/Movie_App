@@ -25,7 +25,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
     borderRadius: wp(1.3),
     position: 'absolute',
-    top: hp(47.5),
+    top: hp(45.5),
     left: wp(6),
   },
   ratingText: {
