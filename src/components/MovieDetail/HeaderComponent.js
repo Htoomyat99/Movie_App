@@ -9,34 +9,32 @@ import {
 //icons
 import BackIcon from '../../../assets/icons/BackIcon';
 import StarIcon from '../../../assets/icons/StarIcon';
-import PlayIcon from '../../../assets/icons/PlayIcon';
-import TrailerIcon from '../../../assets/icons/TrailerIcon';
 import FavoriteIcon from '../../../assets/icons/FavoriteIcon';
 import FavoriteFilled from '../../../assets/icons/FavoriteFilled';
 import {movieColor} from '../../utils/theme/color';
 import {AuthContext} from '../../context/Context';
-import VideoPlayer from 'react-native-video-player';
+// import VideoPlayer from 'react-native-video-player';
 
 const HeaderComponent = props => {
-  const {favoriteList} = useContext(AuthContext);
+  // const {favoriteList} = useContext(AuthContext);
 
-  const foundMovie =
-    favoriteList.length > 0 &&
-    favoriteList.find(item => item.id === props.data.id);
+  // const foundMovie =
+  //   favoriteList.length > 0 &&
+  //   favoriteList.find(item => item.id === props.data.id);
 
   // console.log('foundMovie >>>', props.isFavorite, foundMovie);
 
   return (
     <View style={{zIndex: 1}}>
-      <View style={{height: hp(55)}}>
+      {/* <View style={{height: hp(55)}}>
         <VideoPlayer
           video={require('../../../assets/video/myMoive.mp4')}
-          // video={{
-          //   uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-          // }}
-          // video={{
-          //   uri: 'https://www.themoviedb.org/movie/238-the-godfather/watch?locale=AO.mp4',
-          // }}
+          video={{
+            uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+          }}
+          video={{
+            uri: 'https://www.themoviedb.org/movie/238-the-godfather/watch?locale=AO.mp4',
+          }}
           videoWidth={1600}
           videoHeight={hp(225)}
           endThumbnail={{uri: props.uri}}
@@ -45,7 +43,13 @@ const HeaderComponent = props => {
           }}
           showDuration={true}
         />
-      </View>
+      </View> */}
+
+      <Image
+        source={{uri: props.uri}}
+        style={{width: wp(100), height: hp(55)}}
+        resizeMode="cover"
+      />
 
       {/* backIcon */}
       <TouchableOpacity
@@ -66,7 +70,7 @@ const HeaderComponent = props => {
           {right: wp(6), backgroundColor: '#eee'},
         ]}
         onPress={props.favoriteAction}>
-        {props.isFavorite && foundMovie ? (
+        {props.isFavorite ? (
           <FavoriteFilled />
         ) : (
           <FavoriteIcon color={movieColor.black} />

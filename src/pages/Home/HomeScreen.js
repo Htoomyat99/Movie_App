@@ -13,7 +13,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import VideoPlayer from 'react-native-video-player';
+// import VideoPlayer from 'react-native-video-player';
 
 //style
 import style from './style';

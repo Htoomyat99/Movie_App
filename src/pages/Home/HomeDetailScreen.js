@@ -10,6 +10,8 @@ import BodyComponent from '../../components/MovieDetail/BodyComponent';
 
 //utils
 import {NetErrorToast} from '../../utils/NetErrorToast';
+import {useDispatch, useSelector} from 'react-redux';
+import {addFavorite} from '../../store/favorite/favoriteSlice';
 
 const HomeDetailScreen = ({route, navigation}) => {
   const {data} = route.params;
@@ -23,6 +25,9 @@ const HomeDetailScreen = ({route, navigation}) => {
   } = useContext(AuthContext);
 
   // console.log('movieDetailData >>>', data);
+
+  const favorite = useSelector(state => state.favorite.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!net) {
@@ -43,22 +48,29 @@ const HomeDetailScreen = ({route, navigation}) => {
   };
 
   const favoriteAction = () => {
-    if (favoriteList.length === 0 || favoriteList.length > 0) {
-      const foundMovie = favoriteList.find(item => item.id === data.id);
-      const updatedMovies = favoriteList.filter(movie => movie.id !== data.id);
-      if (foundMovie) {
-        changeUpdateList(updatedMovies);
-        changeIsFavorite(false);
-        ToastAndroid.show(
-          'Remove from Favorite Successfully',
-          ToastAndroid.SHORT,
-        );
-      } else {
-        changeFavoriteList(data);
-        changeIsFavorite(true);
-        ToastAndroid.show('Add to Favorite Successfully', ToastAndroid.SHORT);
-      }
-    }
+    // if (favoriteList.length === 0 || favoriteList.length > 0) {
+    //   const foundMovie = favoriteList.find(item => item.id === data.id);
+    //   const updatedMovies = favoriteList.filter(movie => movie.id !== data.id);
+    //   if (foundMovie) {
+    //     changeUpdateList(updatedMovies);
+    //     changeIsFavorite(false);
+    //     ToastAndroid.show(
+    //       'Remove from Favorite Successfully',
+    //       ToastAndroid.SHORT,
+    //     );
+    //   } else {
+    //     changeFavoriteList(data);
+    //     changeIsFavorite(true);
+    //     ToastAndroid.show('Add to Favorite Successfully', ToastAndroid.SHORT);
+    //   }
+    // }
+    changeIsFavorite(!isFavorite);
+    // console.log('isFavorite >>>', isFavorite);
+    console.log('initial >>>', favorite);
+    console.log(
+      'dispatch >>>',
+      dispatch(addFavorite({id: 1, name: 'Example 1'})),
+    );
   };
 
   return (
