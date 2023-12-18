@@ -18,10 +18,12 @@ import {NetErrorToast} from '../../utils/NetErrorToast';
 import apiUrl from '../../utils/apiUrl';
 import {fetchGetByToken} from '../../utils/fetchData';
 import appStorage from '../../utils/appStorage';
+import {useSelector} from 'react-redux';
 
 const FavoriteScreen = ({navigation}) => {
-  const {net, favoriteList, isFavorite} = useContext(AuthContext);
+  const {net} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
+  const favorite = useSelector(state => state.favorite.value);
 
   let controller = new AbortController();
   const signal = controller.signal;
@@ -32,14 +34,9 @@ const FavoriteScreen = ({navigation}) => {
     }
   }, [net]);
 
-  useEffect(() => {
-    if (favoriteList?.length > 0) {
-      appStorage.setItem('@movieData', JSON.stringify(favoriteList));
-      appStorage.setItem('@favorite', isFavorite);
-    }
-  }, []);
-
-  // console.log('favoriteScreen >>>', favoriteList);
+  // useEffect(() => {
+  //   appStorage.setItem('@favoriteData', JSON.stringify(favorite));
+  // }, []);
 
   const goMovieDetail = item => {
     fetchMovieDetail(item.id);
@@ -112,10 +109,10 @@ const FavoriteScreen = ({navigation}) => {
       </View>
 
       {/* movieList */}
-      {favoriteList.length != 0 ? (
+      {favorite.length != 0 ? (
         <FlatList
           style={style.flatList}
-          data={favoriteList}
+          data={favorite}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           ItemSeparatorComponent={ItemSeparatorComponent}

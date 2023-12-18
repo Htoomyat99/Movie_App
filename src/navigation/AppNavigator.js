@@ -14,23 +14,9 @@ import appStorage from '../utils/appStorage';
 const AppNavigator = () => {
   const [isTemporary, setIsTemporary] = useState(true);
   const [net, setNet] = useState(true);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [favoriteList, setFavoriteList] = useState([]);
 
   const context = {
     net,
-    isFavorite,
-    favoriteList,
-
-    changeIsFavorite: val => {
-      setIsFavorite(val);
-    },
-    changeFavoriteList: val => {
-      setFavoriteList(prev => [...prev, val]);
-    },
-    changeUpdateList: val => {
-      setFavoriteList(val);
-    },
   };
 
   useEffect(() => {
@@ -49,13 +35,18 @@ const AppNavigator = () => {
     };
   }, []);
 
+  // useEffect(() => {
+  //   const data = appStorage.getItem('@movieData');
+  //   const favorite = appStorage.getItem('@favorite');
+  //   if (data?.length > 0) {
+  //     setFavoriteList(JSON.parse(data));
+  //     setIsFavorite(favorite);
+  //   }
+  // }, []);
+
   useEffect(() => {
-    const data = appStorage.getItem('@movieData');
-    const favorite = appStorage.getItem('@favorite');
-    if (data?.length > 0) {
-      setFavoriteList(JSON.parse(data));
-      setIsFavorite(favorite);
-    }
+    const data = appStorage.getItem('@favoriteData');
+    console.log('data >>>', data);
   }, []);
 
   if (isTemporary) {

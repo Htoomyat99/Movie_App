@@ -12,18 +12,9 @@ import StarIcon from '../../../assets/icons/StarIcon';
 import FavoriteIcon from '../../../assets/icons/FavoriteIcon';
 import FavoriteFilled from '../../../assets/icons/FavoriteFilled';
 import {movieColor} from '../../utils/theme/color';
-import {AuthContext} from '../../context/Context';
 // import VideoPlayer from 'react-native-video-player';
 
 const HeaderComponent = props => {
-  // const {favoriteList} = useContext(AuthContext);
-
-  // const foundMovie =
-  //   favoriteList.length > 0 &&
-  //   favoriteList.find(item => item.id === props.data.id);
-
-  // console.log('foundMovie >>>', props.isFavorite, foundMovie);
-
   return (
     <View style={{zIndex: 1}}>
       {/* <View style={{height: hp(55)}}>
