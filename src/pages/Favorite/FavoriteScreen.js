@@ -23,7 +23,8 @@ import {useSelector} from 'react-redux';
 const FavoriteScreen = ({navigation}) => {
   const {net} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
-  const favorite = useSelector(state => state.favorite.value);
+  // const favorite = useSelector(state => state.favorite.value);
+  const [darkData, setDarkData] = useState([]);
 
   let controller = new AbortController();
   const signal = controller.signal;
@@ -32,11 +33,11 @@ const FavoriteScreen = ({navigation}) => {
     if (!net) {
       NetErrorToast();
     }
+    const ddd = appStorage.getItem('@favoriteData');
+    if (ddd?.length > 0) {
+      setDarkData(JSON.parse(ddd));
+    }
   }, [net]);
-
-  // useEffect(() => {
-  //   appStorage.setItem('@favoriteData', JSON.stringify(favorite));
-  // }, []);
 
   const goMovieDetail = item => {
     fetchMovieDetail(item.id);
@@ -109,10 +110,10 @@ const FavoriteScreen = ({navigation}) => {
       </View>
 
       {/* movieList */}
-      {favorite.length != 0 ? (
+      {darkData.length != 0 ? (
         <FlatList
           style={style.flatList}
-          data={favorite}
+          data={darkData}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           ItemSeparatorComponent={ItemSeparatorComponent}

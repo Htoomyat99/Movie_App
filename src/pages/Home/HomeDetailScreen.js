@@ -12,6 +12,7 @@ import BodyComponent from '../../components/MovieDetail/BodyComponent';
 import {NetErrorToast} from '../../utils/NetErrorToast';
 import {useDispatch, useSelector} from 'react-redux';
 import {toggleFavorite} from '../../store/favorite/favoriteSlice';
+import appStorage from '../../utils/appStorage';
 
 const HomeDetailScreen = ({route, navigation}) => {
   const {data} = route.params;
@@ -42,6 +43,7 @@ const HomeDetailScreen = ({route, navigation}) => {
 
   const favoriteAction = () => {
     dispatch(toggleFavorite(data));
+    appStorage.setItem('@isFavorite', isFavorite);
   };
 
   return (

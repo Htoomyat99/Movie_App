@@ -35,18 +35,9 @@ const AppNavigator = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const data = appStorage.getItem('@movieData');
-  //   const favorite = appStorage.getItem('@favorite');
-  //   if (data?.length > 0) {
-  //     setFavoriteList(JSON.parse(data));
-  //     setIsFavorite(favorite);
-  //   }
-  // }, []);
-
   useEffect(() => {
-    const data = appStorage.getItem('@favoriteData');
-    console.log('data >>>', data);
+    const isFavorite = appStorage.getItem('@isFavorite');
+    console.log('isFavorite >>>', isFavorite);
   }, []);
 
   if (isTemporary) {
