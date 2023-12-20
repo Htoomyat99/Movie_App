@@ -43,7 +43,7 @@ const HomeDetailScreen = ({route, navigation}) => {
 
   const favoriteAction = () => {
     dispatch(toggleFavorite(data));
-    appStorage.setItem('@isFavorite', isFavorite);
+    // appStorage.setItem('@isFavorite', isFavorite);
   };
 
   return (

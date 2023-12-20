@@ -35,11 +35,6 @@ const AppNavigator = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const isFavorite = appStorage.getItem('@isFavorite');
-    console.log('isFavorite >>>', isFavorite);
-  }, []);
-
   if (isTemporary) {
     return (
       <>
