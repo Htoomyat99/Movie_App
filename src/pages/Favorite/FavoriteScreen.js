@@ -39,6 +39,13 @@ const FavoriteScreen = ({navigation}) => {
     }
   }, [net]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    setIsLoading(true);
+  }, []);
+
   const goMovieDetail = item => {
     fetchMovieDetail(item.id);
   };
@@ -112,6 +119,7 @@ const FavoriteScreen = ({navigation}) => {
       {/* movieList */}
       {darkData.length != 0 ? (
         <FlatList
+          showsVerticalScrollIndicator={false}
           style={style.flatList}
           data={darkData}
           renderItem={renderItem}

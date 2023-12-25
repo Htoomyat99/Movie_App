@@ -211,6 +211,7 @@ const SearchScreen = ({navigation}) => {
         </View>
       ) : (
         <FlatList
+          showsVerticalScrollIndicator={false}
           style={style.flatList}
           data={searchData != null ? searchData?.results : popularMovieData}
           renderItem={renderItem}
