@@ -34,10 +34,6 @@ Users can explore trending and top-rated movies, search for titles, and manage t
   <img src="./assets/images/preview4.png" alt="Favorite Screen" width="160"/>
 </p>
 
-> 📌 Place your screenshots inside a `screenshots` folder in the project root.
-
----
-
 ## 🛠 Tech Stack
 
 - React Native
