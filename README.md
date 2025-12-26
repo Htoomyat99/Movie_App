@@ -28,10 +28,10 @@ Users can explore trending and top-rated movies, search for titles, and manage t
 ## 🖼 Screenshots
 
 <p align="center">
-  <img src="./assets/images/preview1.png" alt="Home Screen" width="160"/>
-  <img src="./assets/images/preview2.png" alt="Home Detial Screen" width="160"/>
-  <img src="./assets/images/preview3.png" alt="Search Screen" width="160"/>
-  <img src="./assets/images/preview4.png" alt="Favorite Screen" width="160"/>
+  <img src="./assets/images/preview1.jpg" alt="Home Screen" width="160"/>
+  <img src="./assets/images/preview2.jpg" alt="Home Detial Screen" width="160"/>
+  <img src="./assets/images/preview3.jpg" alt="Search Screen" width="160"/>
+  <img src="./assets/images/preview4.jpg" alt="Favorite Screen" width="160"/>
 </p>
 
 ## 🛠 Tech Stack
